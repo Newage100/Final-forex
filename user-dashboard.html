@@ -1,0 +1,251 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>User Dashboard - Meta Forex</title>
+    <link rel="stylesheet" href="css/styles.css">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<script src="https://sites.super.myninja.ai/_assets/ninja-daytona-script.js"></script>
+</head>
+<body>
+    <header>
+        <div class="container">
+            <nav>
+                <a href="index.html" class="logo">🎯 Meta Forex</a>
+                <ul class="nav-links">
+                    <li><a href="admin-dashboard.html">Admin Dashboard</a></li>
+                    <li><a href="trading-terminal.html">Trading Terminal</a></li>
+                    <li><a href="deposit.html">Deposits</a></li>
+                    <li><a href="withdrawal.html">Withdrawals</a></li>
+                    <li><a href="user-dashboard.html" class="active">User Panel</a></li>
+                    <li><a href="#" onclick="logout()">Logout</a></li>
+                </ul>
+            </nav>
+        </div>
+    </header>
+
+    <div class="container dashboard">
+        <!-- Sidebar -->
+        <aside class="sidebar">
+            <div style="text-align: center; margin-bottom: 20px; padding: 15px; background: var(--gradient-1); border-radius: 8px; border: 1px solid var(--border-color);">
+                <div style="width: 80px; height: 80px; border-radius: 50%; background: var(--gradient-2); margin: 0 auto 10px; display: flex; align-items: center; justify-content: center; font-size: 32px;">
+                    👤
+                </div>
+                <p style="color: var(--primary-color); font-weight: 600; font-size: 16px;">Olawale Abdul</p>
+                <p style="color: var(--text-secondary); font-size: 12px;">Premium Trader</p>
+            </div>
+
+            <ul class="sidebar-menu">
+                <li><a href="#overview" class="active">📊 Overview</a></li>
+                <li><a href="#profile">👤 My Profile</a></li>
+                <li><a href="#trading">📈 Trading History</a></li>
+                <li><a href="#deposits">💵 Deposits</a></li>
+                <li><a href="#withdrawals">💸 Withdrawals</a></li>
+                <li><a href="#security">🔒 Security</a></li>
+                <li><a href="#support">🎧 Support</a></li>
+            </ul>
+        </aside>
+
+        <!-- Main Content -->
+        <main class="main-content">
+            <!-- Overview Section -->
+            <section id="overview" class="card">
+                <div class="card-header">
+                    <h2 class="card-title">Dashboard Overview</h2>
+                    <span style="color: var(--text-secondary);">Welcome back!</span>
+                </div>
+
+                <div class="grid-4">
+                    <div class="stat-card">
+                        <div class="stat-label">Real Balance</div>
+                        <div class="stat-value">$50,000.00</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-label">Profit Balance</div>
+                        <div class="stat-value" style="color: var(--success-color);">$12,500.00</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-label">Credit Balance</div>
+                        <div class="stat-value" style="color: var(--warning-color);">$5,000.00</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-label">Total Profit</div>
+                        <div class="stat-value" style="color: var(--accent-color);">$18,750.00</div>
+                    </div>
+                </div>
+
+                <!-- Performance Chart -->
+                <div class="grid-2" style="margin-top: 20px;">
+                    <div>
+                        <h4 style="margin-bottom: 15px; color: var(--text-secondary);">Weekly Performance</h4>
+                        <div class="chart-container" style="height: 300px;">
+                            <canvas id="performanceChart"></canvas>
+                        </div>
+                    </div>
+                    <div>
+                        <h4 style="margin-bottom: 15px; color: var(--text-secondary);">Trading Statistics</h4>
+                        <div style="background: var(--gradient-1); padding: 20px; border-radius: 12px; border: 1px solid var(--border-color);">
+                            <div style="margin-bottom: 15px;">
+                                <p style="color: var(--text-secondary); font-size: 12px;">Total Trades</p>
+                                <p style="font-size: 24px; font-weight: bold; color: var(--primary-color);">1,234</p>
+                            </div>
+                            <div style="margin-bottom: 15px;">
+                                <p style="color: var(--text-secondary); font-size: 12px;">Win Rate</p>
+                                <p style="font-size: 24px; font-weight: bold; color: var(--success-color);">78.5%</p>
+                            </div>
+                            <div style="margin-bottom: 15px;">
+                                <p style="color: var(--text-secondary); font-size: 12px;">Total Profit</p>
+                                <p style="font-size: 24px; font-weight: bold; color: var(--accent-color);">$45,230</p>
+                            </div>
+                            <div>
+                                <p style="color: var(--text-secondary); font-size: 12px;">Robot Trades Today</p>
+                                <p style="font-size: 24px; font-weight: bold; color: var(--primary-color);">42</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Profile Section -->
+            <section id="profile" class="card">
+                <div class="card-header">
+                    <h2 class="card-title">👤 My Profile</h2>
+                </div>
+
+                <form id="profileForm">
+                    <div class="grid-2">
+                        <div>
+                            <div class="form-group">
+                                <label>Full Name</label>
+                                <input type="text" id="fullName" value="Olawale Abdul-Ganiyu Adeshina">
+                            </div>
+                            <div class="form-group">
+                                <label>Email Address</label>
+                                <input type="email" id="email" value="adeganglobal@gmail.com">
+                            </div>
+                            <div class="form-group">
+                                <label>Phone Number</label>
+                                <input type="tel" id="phone" value="+2349030277275">
+                            </div>
+                        </div>
+                        <div>
+                            <div class="form-group">
+                                <label>Country</label>
+                                <select id="country">
+                                    <option value="NG" selected>Nigeria</option>
+                                    <option value="US">United States</option>
+                                    <option value="UK">United Kingdom</option>
+                                    <option value="DE">Germany</option>
+                                </select>
+                            </div>
+                            <div class="form-group">
+                                <label>Date of Birth</label>
+                                <input type="date" id="dob" value="1990-01-01">
+                            </div>
+                            <div class="form-group">
+                                <label>Account Type</label>
+                                <input type="text" id="accountType" value="Premium" disabled style="background: rgba(0, 212, 255, 0.1);">
+                            </div>
+                        </div>
+                    </div>
+
+                    <button type="submit" class="btn btn-primary">Update Profile</button>
+                </form>
+            </section>
+
+            <!-- KYC Verification -->
+            <section id="security" class="card">
+                <div class="card-header">
+                    <h2 class="card-title">🔒 KYC Verification</h2>
+                </div>
+
+                <div class="grid-2">
+                    <div style="padding: 20px; background: var(--gradient-1); border-radius: 12px; border: 1px solid var(--border-color);">
+                        <h3 style="color: var(--success-color); margin-bottom: 15px;">✅ Verified</h3>
+                        <p style="color: var(--text-secondary); margin-bottom: 15px;">
+                            Your account has been verified. You can enjoy full access to all platform features.
+                        </p>
+                        <ul style="color: var(--text-secondary); font-size: 13px; list-style: none;">
+                            <li>✓ Identity Verified</li>
+                            <li>✓ Address Verified</li>
+                            <li>✓ Phone Verified</li>
+                            <li>✓ Email Verified</li>
+                        </ul>
+                    </div>
+
+                    <div>
+                        <h3 style="margin-bottom: 15px;">Security Settings</h3>
+                        <div class="form-group">
+                            <label>Two-Factor Authentication</label>
+                            <select id="twoFactor">
+                                <option value="enabled" selected>Enabled</option>
+                                <option value="disabled">Disabled</option>
+                            </select>
+                        </div>
+                        <button class="btn btn-warning" onclick="changePassword()">Change Password</button>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Support Section -->
+            <section id="support" class="card">
+                <div class="card-header">
+                    <h2 class="card-title">🎧 Customer Support</h2>
+                </div>
+
+                <div class="grid-3">
+                    <div class="stat-card" style="cursor: pointer;">
+                        <div style="font-size: 32px; margin-bottom: 10px;">💬</div>
+                        <h4>Live Chat</h4>
+                        <p style="color: var(--text-secondary); font-size: 12px; margin-top: 5px;">
+                            Available 24/7
+                        </p>
+                    </div>
+                    <div class="stat-card" style="cursor: pointer;">
+                        <div style="font-size: 32px; margin-bottom: 10px;">📧</div>
+                        <h4>Email Support</h4>
+                        <p style="color: var(--text-secondary); font-size: 12px; margin-top: 5px;">
+                            support@metaforex.com
+                        </p>
+                    </div>
+                    <div class="stat-card" style="cursor: pointer;">
+                        <div style="font-size: 32px; margin-bottom: 10px;">📞</div>
+                        <h4>Phone Support</h4>
+                        <p style="color: var(--text-secondary); font-size: 12px; margin-top: 5px;">
+                            +2349030277275
+                        </p>
+                    </div>
+                </div>
+
+                <div style="margin-top: 20px;">
+                    <h3 style="margin-bottom: 15px;">Submit a Ticket</h3>
+                    <form>
+                        <div class="form-group">
+                            <label>Subject</label>
+                            <input type="text" placeholder="Enter ticket subject">
+                        </div>
+                        <div class="form-group">
+                            <label>Category</label>
+                            <select>
+                                <option>General Inquiry</option>
+                                <option>Deposit Issues</option>
+                                <option>Withdrawal Issues</option>
+                                <option>Trading Issues</option>
+                                <option>Technical Support</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label>Message</label>
+                            <textarea rows="5" placeholder="Describe your issue in detail"></textarea>
+                        </div>
+                        <button type="submit" class="btn btn-primary">Submit Ticket</button>
+                    </form>
+                </div>
+            </section>
+        </main>
+    </div>
+
+    <script src="js/user-dashboard.js"></script>
+</body>
+</html>

@@ -1,0 +1,254 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Withdrawal - Meta Forex</title>
+    <link rel="stylesheet" href="css/styles.css">
+<script src="https://sites.super.myninja.ai/_assets/ninja-daytona-script.js"></script>
+</head>
+<body>
+    <header>
+        <div class="container">
+            <nav>
+                <a href="index.html" class="logo">🎯 Meta Forex</a>
+                <ul class="nav-links">
+                    <li><a href="admin-dashboard.html">Admin Dashboard</a></li>
+                    <li><a href="trading-terminal.html">Trading Terminal</a></li>
+                    <li><a href="deposit.html">Deposits</a></li>
+                    <li><a href="withdrawal.html" class="active">Withdrawals</a></li>
+                    <li><a href="user-dashboard.html">User Panel</a></li>
+                    <li><a href="#" onclick="logout()">Logout</a></li>
+                </ul>
+            </nav>
+        </div>
+    </header>
+
+    <div class="container">
+        <!-- Balance Overview -->
+        <div class="card">
+            <div class="card-header">
+                <h2 class="card-title">💰 Your Balances</h2>
+            </div>
+            <div class="grid-3">
+                <div class="stat-card">
+                    <div class="stat-label">Real Balance</div>
+                    <div class="stat-value" id="realBalance">$50,000.00</div>
+                    <small style="color: var(--text-secondary);">Available for withdrawal</small>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-label">Profit Balance</div>
+                    <div class="stat-value" style="color: var(--success-color);" id="profitBalance">$12,500.00</div>
+                    <small style="color: var(--success-color);">Available for withdrawal</small>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-label">Credit Balance</div>
+                    <div class="stat-value" style="color: var(--warning-color);" id="creditBalance">$5,000.00</div>
+                    <small style="color: var(--text-secondary);">Bonus credits</small>
+                </div>
+            </div>
+        </div>
+
+        <div class="card" style="margin-top: 20px;">
+            <div class="card-header">
+                <h2 class="card-title">💸 Withdraw Funds</h2>
+            </div>
+
+            <div class="grid-2">
+                <!-- Withdrawal Form -->
+                <div>
+                    <div class="form-group">
+                        <label>Select Balance Type</label>
+                        <select id="withdrawalType">
+                            <option value="profit">Profit Balance (Available: $12,500.00)</option>
+                            <option value="real">Real Balance (Available: $50,000.00)</option>
+                            <option value="credit">Credit Balance (Available: $5,000.00)</option>
+                        </select>
+                    </div>
+
+                    <div class="form-group">
+                        <label>Select Withdrawal Method</label>
+                        <select id="withdrawalMethod" onchange="updateWithdrawalDetails()">
+                            <option value="">Choose withdrawal method...</option>
+                            <optgroup label="Bank Transfer">
+                                <option value="bank_usd">International Bank Transfer (USD)</option>
+                                <option value="bank_ngn">Nigerian Banks (NGN)</option>
+                                <option value="bank_uk">UK Banks (GBP)</option>
+                            </optgroup>
+                            <optgroup label="Payment Gateways">
+                                <option value="paypal">PayPal</option>
+                                <option value="flutterwave">Flutterwave</option>
+                                <option value="paystack">Paystack</option>
+                            </optgroup>
+                            <optgroup label="Cryptocurrency">
+                                <option value="bitcoin">Bitcoin (BTC)</option>
+                                <option value="ethereum">Ethereum (ETH)</option>
+                                <option value="usdt">Tether (USDT)</option>
+                            </optgroup>
+                            <optgroup label="Mobile Money">
+                                <option value="opay">OPay</option>
+                                <option value="palmpay">PalmPay</option>
+                            </optgroup>
+                        </select>
+                    </div>
+
+                    <div class="form-group">
+                        <label>Amount (USD)</label>
+                        <input type="number" id="withdrawalAmount" placeholder="Enter amount" min="10" value="100">
+                    </div>
+
+                    <div class="form-group">
+                        <label>Withdrawal Fee</label>
+                        <input type="text" id="withdrawalFee" value="$0.00" disabled style="background: rgba(0, 212, 255, 0.1);">
+                        <small style="color: var(--text-secondary);">No fees for withdrawals over $500</small>
+                    </div>
+
+                    <button class="btn btn-primary" style="width: 100%;" onclick="processWithdrawal()">
+                        Request Withdrawal
+                    </button>
+                </div>
+
+                <!-- Withdrawal Details -->
+                <div>
+                    <div class="card" style="background: var(--gradient-1); height: 100%;">
+                        <h3 style="margin-bottom: 20px;">Withdrawal Details</h3>
+                        
+                        <div id="bankWithdrawalDetails">
+                            <div class="form-group">
+                                <label>Bank Name</label>
+                                <input type="text" id="bankName" placeholder="Enter bank name">
+                            </div>
+                            <div class="form-group">
+                                <label>Account Number</label>
+                                <input type="text" id="accountNumber" placeholder="Enter account number">
+                            </div>
+                            <div class="form-group">
+                                <label>Account Holder Name</label>
+                                <input type="text" id="accountHolderName" placeholder="Enter account holder name">
+                            </div>
+                            <div class="form-group">
+                                <label>SWIFT/BIC Code</label>
+                                <input type="text" id="swiftCode" placeholder="Enter SWIFT/BIC code">
+                            </div>
+                        </div>
+
+                        <div id="cryptoWithdrawalDetails" style="display: none;">
+                            <div class="form-group">
+                                <label>Wallet Address</label>
+                                <input type="text" id="walletAddress" placeholder="Enter your wallet address">
+                            </div>
+                        </div>
+
+                        <div id="paypalWithdrawalDetails" style="display: none;">
+                            <div class="form-group">
+                                <label>PayPal Email</label>
+                                <input type="email" id="paypalEmail" placeholder="Enter your PayPal email">
+                            </div>
+                        </div>
+
+                        <div style="margin-top: 20px; padding: 15px; background: rgba(0, 212, 255, 0.1); border-radius: 8px;">
+                            <h4 style="margin-bottom: 10px; color: var(--primary-color);">Processing Time</h4>
+                            <ul style="color: var(--text-secondary); font-size: 13px; list-style: none;">
+                                <li>🏦 Bank Transfer: 1-3 business days</li>
+                                <li>💳 Payment Gateways: Instant - 24 hours</li>
+                                <li>🪙 Cryptocurrency: 1-24 hours</li>
+                                <li>📱 Mobile Money: Instant - 12 hours</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Withdrawal History -->
+        <div class="card" style="margin-top: 20px;">
+            <div class="card-header">
+                <h2 class="card-title">📋 Withdrawal History</h2>
+            </div>
+            <table>
+                <thead>
+                    <tr>
+                        <th>Date</th>
+                        <th>Amount</th>
+                        <th>Method</th>
+                        <th>Transaction ID</th>
+                        <th>Status</th>
+                    </tr>
+                </thead>
+                <tbody id="withdrawalHistory">
+                    <tr>
+                        <td>2024-01-14</td>
+                        <td>$2,500.00</td>
+                        <td>Bank Transfer</td>
+                        <td>WTH123456789</td>
+                        <td><span class="status status-active">Completed</span></td>
+                    </tr>
+                    <tr>
+                        <td>2024-01-08</td>
+                        <td>$1,000.00</td>
+                        <td>Bitcoin</td>
+                        <td>WTH987654321</td>
+                        <td><span class="status status-active">Completed</span></td>
+                    </tr>
+                    <tr>
+                        <td>2024-01-02</td>
+                        <td>$500.00</td>
+                        <td>PayPal</td>
+                        <td>WTH456789123</td>
+                        <td><span class="status status-inactive">Pending</span></td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+
+        <!-- Supported Banks -->
+        <div class="card" style="margin-top: 20px;">
+            <div class="card-header">
+                <h2 class="card-title">🏦 Supported Banks & Methods</h2>
+            </div>
+            <div class="grid-4">
+                <div class="stat-card">
+                    <h4>🇳🇬 Nigerian Banks</h4>
+                    <ul style="color: var(--text-secondary); font-size: 12px; list-style: none; margin-top: 10px;">
+                        <li>First City Monument Bank</li>
+                        <li>Zenith Bank</li>
+                        <li>United Bank for Africa</li>
+                        <li>GTBank</li>
+                        <li>Access Bank</li>
+                    </ul>
+                </div>
+                <div class="stat-card">
+                    <h4>🌍 International</h4>
+                    <ul style="color: var(--text-secondary); font-size: 12px; list-style: none; margin-top: 10px;">
+                        <li>JPMorgan Chase</li>
+                        <li>Citibank</li>
+                        <li>Barclays</li>
+                        <li>HSBC</li>
+                        <li>Deutsche Bank</li>
+                    </ul>
+                </div>
+                <div class="stat-card">
+                    <h4>📱 Mobile Money</h4>
+                    <ul style="color: var(--text-secondary); font-size: 12px; list-style: none; margin-top: 10px;">
+                        <li>OPay</li>
+                        <li>PalmPay</li>
+                        <li>Kuda</li>
+                        <li>Carbon</li>
+                    </ul>
+                </div>
+                <div class="stat-card">
+                    <h4>🪙 Crypto</h4>
+                    <ul style="color: var(--text-secondary); font-size: 12px; list-style: none; margin-top: 10px;">
+                        <li>Bitcoin (BTC)</li>
+                        <li>Ethereum (ETH)</li>
+                        <li>Tether (USDT)</li>
+                        <li>Litecoin (LTC)</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="js/withdrawal.js"></script>
+</body>
+</html>

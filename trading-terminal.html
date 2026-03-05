@@ -1,0 +1,230 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Trading Terminal - Meta Forex</title>
+    <link rel="stylesheet" href="css/styles.css">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<script src="https://sites.super.myninja.ai/_assets/ninja-daytona-script.js"></script>
+</head>
+<body>
+    <header>
+        <div class="container">
+            <nav>
+                <a href="index.html" class="logo">🎯 Meta Forex</a>
+                <ul class="nav-links">
+                    <li><a href="admin-dashboard.html">Admin Dashboard</a></li>
+                    <li><a href="trading-terminal.html" class="active">Trading Terminal</a></li>
+                    <li><a href="deposit.html">Deposits</a></li>
+                    <li><a href="withdrawal.html">Withdrawals</a></li>
+                    <li><a href="user-dashboard.html">User Panel</a></li>
+                    <li><a href="#" onclick="logout()">Logout</a></li>
+                </ul>
+            </nav>
+        </div>
+    </header>
+
+    <div class="container">
+        <div class="card">
+            <div class="card-header">
+                <h2 class="card-title">📈 Professional Trading Terminal</h2>
+                <div class="robot-status">
+                    <span class="robot-status-indicator"></span>
+                    <span style="color: var(--success-color);">Market Open</span>
+                </div>
+            </div>
+
+            <!-- Market Pairs -->
+            <div class="grid-4" style="margin-bottom: 20px;">
+                <div class="stat-card" onclick="selectPair('EUR/USD')" style="cursor: pointer;">
+                    <div class="stat-label">EUR/USD</div>
+                    <div class="stat-value" id="eurusd-price">1.0875</div>
+                    <small style="color: var(--success-color);">+0.0025</small>
+                </div>
+                <div class="stat-card" onclick="selectPair('GBP/USD')" style="cursor: pointer;">
+                    <div class="stat-label">GBP/USD</div>
+                    <div class="stat-value" id="gbpusd-price">1.2680</div>
+                    <small style="color: var(--danger-color);">-0.0018</small>
+                </div>
+                <div class="stat-card" onclick="selectPair('USD/JPY')" style="cursor: pointer;">
+                    <div class="stat-label">USD/JPY</div>
+                    <div class="stat-value" id="usdjpy-price">148.50</div>
+                    <small style="color: var(--success-color);">+0.35</small>
+                </div>
+                <div class="stat-card" onclick="selectPair('BTC/USD')" style="cursor: pointer;">
+                    <div class="stat-label">BTC/USD</div>
+                    <div class="stat-value" id="btcusd-price">43,250</div>
+                    <small style="color: var(--success-color);">+125</small>
+                </div>
+            </div>
+
+            <!-- Main Trading Interface -->
+            <div class="grid-3">
+                <!-- Chart -->
+                <div style="grid-column: span 2;">
+                    <div class="card-header">
+                        <h3 id="selectedPair" style="color: var(--primary-color);">EUR/USD</h3>
+                        <div class="price-display" id="currentPrice">
+                            1.0875
+                        </div>
+                    </div>
+                    <div class="chart-container" style="height: 400px;">
+                        <canvas id="priceChart"></canvas>
+                    </div>
+
+                    <!-- Trade Controls -->
+                    <div class="card" style="margin-top: 20px;">
+                        <div class="card-header">
+                            <h3 class="card-title">Manual Trading</h3>
+                        </div>
+
+                        <div class="grid-2">
+                            <div>
+                                <div class="form-group">
+                                    <label>Trade Amount ($)</label>
+                                    <input type="number" id="tradeAmount" value="100" min="10">
+                                </div>
+                                <div class="form-group">
+                                    <label>Leverage</label>
+                                    <select id="leverage">
+                                        <option value="1">1:1</option>
+                                        <option value="10">1:10</option>
+                                        <option value="20">1:20</option>
+                                        <option value="50">1:50</option>
+                                        <option value="100" selected>1:100</option>
+                                    </select>
+                                </div>
+                            </div>
+                            <div>
+                                <div class="form-group">
+                                    <label>Stop Loss ($)</label>
+                                    <input type="number" id="stopLoss" placeholder="Optional">
+                                </div>
+                                <div class="form-group">
+                                    <label>Take Profit ($)</label>
+                                    <input type="number" id="takeProfit" placeholder="Optional">
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="action-buttons">
+                            <button class="buy-btn" onclick="executeTrade('buy')">📈 BUY</button>
+                            <button class="sell-btn" onclick="executeTrade('sell')">📉 SELL</button>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Right Panel -->
+                <div>
+                    <!-- User Balance -->
+                    <div class="card" style="background: var(--gradient-1);">
+                        <h3 style="margin-bottom: 15px;">💰 Your Balance</h3>
+                        <div class="wallet-balance">
+                            <div class="wallet-item">
+                                <div class="wallet-label">Real Balance</div>
+                                <div class="wallet-amount" id="userRealBalance">$50,000.00</div>
+                            </div>
+                            <div class="wallet-item">
+                                <div class="wallet-label">Profit Balance</div>
+                                <div class="wallet-amount" id="userProfitBalance">$12,500.00</div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Robot Trading Control -->
+                    <div class="robot-section">
+                        <div class="card-header">
+                            <h3 class="card-title">🤖 Robot Trading</h3>
+                            <div class="robot-status">
+                                <span class="robot-status-indicator" id="robotIndicator"></span>
+                                <span id="robotStatusText" style="color: var(--success-color);">Active</span>
+                            </div>
+                        </div>
+
+                        <div class="grid-2">
+                            <div class="form-group">
+                                <label>Auto Buy/Sell</label>
+                                <select id="robotAutoTrade">
+                                    <option value="yes">Yes</option>
+                                    <option value="no">No</option>
+                                </select>
+                            </div>
+                            <div class="form-group">
+                                <label>Pull Duration (sec)</label>
+                                <input type="number" id="pullDuration" value="6" min="1">
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <label>Profit Transfer (sec)</label>
+                            <input type="number" id="profitTransferInterval" value="2" min="1">
+                        </div>
+
+                        <div class="form-group">
+                            <label>Max Trade Amount ($)</label>
+                            <input type="number" id="maxRobotTrade" value="1000">
+                        </div>
+
+                        <div class="form-group">
+                            <label>Target Wallet</label>
+                            <select id="targetWallet">
+                                <option value="profit">Profit Balance (Withdrawable)</option>
+                                <option value="real">Real Balance</option>
+                            </select>
+                        </div>
+
+                        <div class="action-buttons">
+                            <button class="btn btn-success" onclick="startRobotTrading()" style="flex: 1;">▶ Start Robot</button>
+                            <button class="btn btn-danger" onclick="stopRobotTrading()" style="flex: 1;">⏹ Stop Robot</button>
+                        </div>
+
+                        <div style="margin-top: 15px; padding: 10px; background: rgba(0, 255, 136, 0.1); border-radius: 8px;">
+                            <p style="color: var(--text-secondary); font-size: 12px; margin-bottom: 5px;">Robot Profit Today:</p>
+                            <p style="color: var(--success-color); font-weight: bold; font-size: 18px;" id="robotProfitToday">$0.00</p>
+                        </div>
+                    </div>
+
+                    <!-- Active Trades -->
+                    <div class="card" style="margin-top: 20px;">
+                        <div class="card-header">
+                            <h3 class="card-title">Active Trades</h3>
+                        </div>
+                        <div id="activeTrades">
+                            <p style="color: var(--text-secondary); text-align: center;">No active trades</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Trade History -->
+            <div class="card" style="margin-top: 20px;">
+                <div class="card-header">
+                    <h3 class="card-title">📊 Trade History</h3>
+                </div>
+                <div id="tradeHistoryContainer">
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>Time</th>
+                                <th>Pair</th>
+                                <th>Type</th>
+                                <th>Entry</th>
+                                <th>Exit</th>
+                                <th>Amount</th>
+                                <th>Profit/Loss</th>
+                                <th>Status</th>
+                            </tr>
+                        </thead>
+                        <tbody id="tradeHistoryBody">
+                            <!-- Trade history will be loaded here -->
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="js/trading.js"></script>
+</body>
+</html>

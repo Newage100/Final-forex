@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Meta Forex - Advanced Trading Platform</title>
+    <link rel="stylesheet" href="css/styles.css">
+<script src="https://sites.super.myninja.ai/_assets/ninja-daytona-script.js"></script>
+</head>
+<body class="login-container">
+    <div class="login-box">
+        <div class="login-logo">
+            <h1>🎯 Meta Forex</h1>
+            <p>Advanced Trading Platform</p>
+            <p style="margin-top: 10px; color: var(--accent-color); font-weight: 600;">
+                Olawale Abdul-Ganiyu Adeshina
+            </p>
+            <p style="color: var(--text-secondary); font-size: 12px; margin-top: 5px;">
+                Administrator
+            </p>
+        </div>
+
+        <form id="loginForm">
+            <div class="form-group">
+                <label for="email">Email Address</label>
+                <input type="email" id="email" name="email" placeholder="Enter your email" required>
+            </div>
+
+            <div class="form-group">
+                <label for="password">Password</label>
+                <input type="password" id="password" name="password" placeholder="Enter your password" required>
+            </div>
+
+            <div class="form-group">
+                <label>
+                    <input type="checkbox" id="remember" name="remember">
+                    Remember me
+                </label>
+            </div>
+
+            <button type="submit" class="btn btn-primary" style="width: 100%;">
+                Login to Dashboard
+            </button>
+        </form>
+
+        <div style="margin-top: 20px; text-align: center; color: var(--text-secondary); font-size: 12px;">
+            <p>Contact: adeganglobal@gmail.com</p>
+            <p>+2349030277275</p>
+            <p style="margin-top: 15px; color: var(--primary-color);">
+                Powered by Olawale Abdul Gain Forex Trading
+            </p>
+        </div>
+    </div>
+
+    <script>
+        document.getElementById('loginForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+            
+            const email = document.getElementById('email').value;
+            const password = document.getElementById('password').value;
+
+            // Check for admin credentials
+            if (email === 'adeganglobal@gmail.com' && password === 'admin123') {
+                // Redirect to admin dashboard
+                window.location.href = 'admin-dashboard.html';
+            } else if (email && password) {
+                // Redirect to user dashboard for demo purposes
+                window.location.href = 'user-dashboard.html';
+            } else {
+                showNotification('Please enter valid credentials', 'error');
+            }
+        });
+
+        function showNotification(message, type) {
+            const notification = document.createElement('div');
+            notification.className = `notification notification-${type}`;
+            notification.textContent = message;
+            document.body.appendChild(notification);
+
+            setTimeout(() => {
+                notification.remove();
+            }, 3000);
+        }
+
+        // Auto-fill demo credentials for convenience
+        document.getElementById('email').value = 'adeganglobal@gmail.com';
+        document.getElementById('password').value = 'admin123';
+    </script>
+</body>
+</html>

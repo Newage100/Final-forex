@@ -1,0 +1,242 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Deposit - Meta Forex</title>
+    <link rel="stylesheet" href="css/styles.css">
+<script src="https://sites.super.myninja.ai/_assets/ninja-daytona-script.js"></script>
+</head>
+<body>
+    <header>
+        <div class="container">
+            <nav>
+                <a href="index.html" class="logo">🎯 Meta Forex</a>
+                <ul class="nav-links">
+                    <li><a href="admin-dashboard.html">Admin Dashboard</a></li>
+                    <li><a href="trading-terminal.html">Trading Terminal</a></li>
+                    <li><a href="deposit.html" class="active">Deposits</a></li>
+                    <li><a href="withdrawal.html">Withdrawals</a></li>
+                    <li><a href="user-dashboard.html">User Panel</a></li>
+                    <li><a href="#" onclick="logout()">Logout</a></li>
+                </ul>
+            </nav>
+        </div>
+    </header>
+
+    <div class="container">
+        <div class="card">
+            <div class="card-header">
+                <h2 class="card-title">💵 Deposit Funds</h2>
+            </div>
+
+            <div class="grid-2">
+                <!-- Deposit Form -->
+                <div>
+                    <div class="form-group">
+                        <label>Select Deposit Method</label>
+                        <select id="depositMethod" onchange="updateDepositDetails()">
+                            <option value="">Choose payment method...</option>
+                            <optgroup label="Bank Transfer">
+                                <option value="bank_usd">International Bank Transfer (USD)</option>
+                                <option value="bank_ngn">Nigerian Banks (NGN)</option>
+                                <option value="bank_uk">UK Banks (GBP)</option>
+                            </optgroup>
+                            <optgroup label="Payment Gateways">
+                                <option value="paypal">PayPal</option>
+                                <option value="stripe">Stripe (Credit/Debit Card)</option>
+                                <option value="flutterwave">Flutterwave</option>
+                                <option value="paystack">Paystack</option>
+                            </optgroup>
+                            <optgroup label="Cryptocurrency">
+                                <option value="bitcoin">Bitcoin (BTC)</option>
+                                <option value="ethereum">Ethereum (ETH)</option>
+                                <option value="usdt">Tether (USDT)</option>
+                            </optgroup>
+                            <optgroup label="Mobile Money">
+                                <option value="opay">OPay</option>
+                                <option value="palmpay">PalmPay</option>
+                            </optgroup>
+                        </select>
+                    </div>
+
+                    <div class="form-group">
+                        <label>Amount (USD)</label>
+                        <input type="number" id="depositAmount" placeholder="Enter amount" min="10" value="100">
+                    </div>
+
+                    <div class="form-group">
+                        <label>Currency</label>
+                        <select id="depositCurrency">
+                            <option value="USD">USD - US Dollar</option>
+                            <option value="EUR">EUR - Euro</option>
+                            <option value="GBP">GBP - British Pound</option>
+                            <option value="NGN">NGN - Nigerian Naira</option>
+                        </select>
+                    </div>
+
+                    <div class="form-group">
+                        <label>Promo Code (Optional)</label>
+                        <input type="text" id="promoCode" placeholder="Enter promo code">
+                    </div>
+
+                    <button class="btn btn-primary" style="width: 100%;" onclick="processDeposit()">
+                        Proceed to Payment
+                    </button>
+
+                    <div style="margin-top: 20px; padding: 15px; background: var(--gradient-1); border-radius: 8px;">
+                        <h4 style="margin-bottom: 10px; color: var(--primary-color);">Deposit Bonus</h4>
+                        <ul style="color: var(--text-secondary); font-size: 14px; list-style: none;">
+                            <li>✓ $100 - $499: 5% Bonus</li>
+                            <li>✓ $500 - $999: 10% Bonus</li>
+                            <li>✓ $1,000 - $4,999: 15% Bonus</li>
+                            <li>✓ $5,000+: 25% Bonus + VIP Status</li>
+                        </ul>
+                    </div>
+                </div>
+
+                <!-- Payment Details -->
+                <div id="paymentDetails">
+                    <div class="card" style="background: var(--gradient-1); height: 100%;">
+                        <h3 style="margin-bottom: 20px;">Payment Information</h3>
+                        <p style="color: var(--text-secondary); margin-bottom: 20px;">
+                            Select a deposit method to see payment details.
+                        </p>
+
+                        <div id="bankDetails" style="display: none;">
+                            <h4 style="color: var(--primary-color); margin-bottom: 15px;">Bank Transfer Details</h4>
+                            <div style="background: rgba(0, 212, 255, 0.1); padding: 15px; border-radius: 8px; margin-bottom: 15px;">
+                                <p style="color: var(--text-secondary); font-size: 12px;">Bank Name</p>
+                                <p style="font-weight: 600;">First City Monument Bank</p>
+                                
+                                <p style="color: var(--text-secondary); font-size: 12px; margin-top: 10px;">Account Name</p>
+                                <p style="font-weight: 600;">Olawale Abdul-Ganiyu Adeshina</p>
+                                
+                                <p style="color: var(--text-secondary); font-size: 12px; margin-top: 10px;">Account Number</p>
+                                <p style="font-weight: 600; color: var(--primary-color);">0123456789</p>
+                            </div>
+                        </div>
+
+                        <div id="cryptoDetails" style="display: none;">
+                            <h4 style="color: var(--primary-color); margin-bottom: 15px;">Crypto Wallet Address</h4>
+                            <div style="background: rgba(0, 212, 255, 0.1); padding: 15px; border-radius: 8px; margin-bottom: 15px;">
+                                <p style="color: var(--text-secondary); font-size: 12px;">Wallet Address</p>
+                                <p style="font-weight: 600; font-size: 12px; word-break: break-all;">
+                                    bc1qxy2kgdygjrsqtzq2n0yrf2493p83kkfjhx0wlh
+                                </p>
+                                <button class="btn btn-outline btn-sm" style="margin-top: 10px;" onclick="copyAddress()">
+                                    Copy Address
+                                </button>
+                            </div>
+                        </div>
+
+                        <div id="gatewayDetails" style="display: none;">
+                            <h4 style="color: var(--primary-color); margin-bottom: 15px;">Payment Gateway</h4>
+                            <p style="color: var(--text-secondary);">
+                                You will be redirected to the payment gateway to complete your deposit securely.
+                            </p>
+                        </div>
+
+                        <div style="margin-top: 20px;">
+                            <h4 style="margin-bottom: 10px;">Important Notes:</h4>
+                            <ul style="color: var(--text-secondary); font-size: 13px; list-style: disc; padding-left: 20px;">
+                                <li>Minimum deposit: $10</li>
+                                <li>Maximum deposit: $100,000 per transaction</li>
+                                <li>Processing time: Instant - 24 hours</li>
+                                <li>Contact support for amounts over $100,000</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Deposit History -->
+        <div class="card" style="margin-top: 20px;">
+            <div class="card-header">
+                <h2 class="card-title">📋 Deposit History</h2>
+            </div>
+            <table>
+                <thead>
+                    <tr>
+                        <th>Date</th>
+                        <th>Amount</th>
+                        <th>Method</th>
+                        <th>Transaction ID</th>
+                        <th>Status</th>
+                    </tr>
+                </thead>
+                <tbody id="depositHistory">
+                    <tr>
+                        <td>2024-01-15</td>
+                        <td>$5,000.00</td>
+                        <td>Bank Transfer</td>
+                        <td>TXN123456789</td>
+                        <td><span class="status status-active">Completed</span></td>
+                    </tr>
+                    <tr>
+                        <td>2024-01-10</td>
+                        <td>$2,500.00</td>
+                        <td>Bitcoin</td>
+                        <td>TXN987654321</td>
+                        <td><span class="status status-active">Completed</span></td>
+                    </tr>
+                    <tr>
+                        <td>2024-01-05</td>
+                        <td>$1,000.00</td>
+                        <td>PayPal</td>
+                        <td>TXN456789123</td>
+                        <td><span class="status status-active">Completed</span></td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+
+        <!-- Payment Gateways Info -->
+        <div class="card" style="margin-top: 20px;">
+            <div class="card-header">
+                <h2 class="card-title">🏦 Supported Payment Methods</h2>
+            </div>
+            <div class="grid-4">
+                <div class="stat-card">
+                    <h4>🏦 Banks</h4>
+                    <ul style="color: var(--text-secondary); font-size: 12px; list-style: none; margin-top: 10px;">
+                        <li>FCMB</li>
+                        <li>Zenith Bank</li>
+                        <li>UBA</li>
+                        <li>OPay</li>
+                        <li>PalmPay</li>
+                    </ul>
+                </div>
+                <div class="stat-card">
+                    <h4>💳 Cards</h4>
+                    <ul style="color: var(--text-secondary); font-size: 12px; list-style: none; margin-top: 10px;">
+                        <li>Visa</li>
+                        <li>Mastercard</li>
+                        <li>Verve</li>
+                    </ul>
+                </div>
+                <div class="stat-card">
+                    <h4>🌐 Gateways</h4>
+                    <ul style="color: var(--text-secondary); font-size: 12px; list-style: none; margin-top: 10px;">
+                        <li>PayPal</li>
+                        <li>Stripe</li>
+                        <li>Flutterwave</li>
+                        <li>Paystack</li>
+                    </ul>
+                </div>
+                <div class="stat-card">
+                    <h4>🪙 Crypto</h4>
+                    <ul style="color: var(--text-secondary); font-size: 12px; list-style: none; margin-top: 10px;">
+                        <li>Bitcoin</li>
+                        <li>Ethereum</li>
+                        <li>USDT</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="js/deposit.js"></script>
+</body>
+</html>
